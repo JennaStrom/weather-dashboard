@@ -1,0 +1,17 @@
+* {
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    text-align: center;
+    font-size: 50px;
+    background-color: rgba(85, 172, 189, 0.726);
+    color: rgb(240, 243, 230);
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#city-search {
+   padding-right: 40px;
+}
