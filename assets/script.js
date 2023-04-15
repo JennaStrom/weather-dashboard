@@ -1,5 +1,5 @@
-//the city that is searched in the input bar
-var searchBarInput = document.querySelector('#search-bar');
+
+
 //the button to start the search
 var searchButton = document.querySelector('#search');
 //A list made from the recent searches
@@ -11,28 +11,36 @@ var APIKey = "6b32be2fe9073dbf3583f172c6f9d004";
 var city;
 var savedSearches = [];
 
-//this is working to fetch and console log data...need to use this to search the city and pull the lat/long codes from.
-fetch('https://api.openweathermap.org/data/2.5/weather?q=London&appid=6b32be2fe9073dbf3583f172c6f9d004')
- .then(response => response.json())
- .then(data => console.log(data))
 
- //this is a mess.
-var currentWeather = function (event) {
-  event.preventDefault();
-  var city = searchBarInput.value.trim();
+function searchWeather() {
+    var searchBarInput = document.querySelector('#search-bar');
+//     var pastSearches = localStorage.getItem("cities")
+// if (!savedSearches.includes(searchBarInput.value)) {
+//     pastSearches=json.parse(searchHistory)
+// savedSearches.push(searchBarInput.value)
+// localStorage.setItem("cities", savedSearches)
+//}
+displayResults.innerHTML = ''
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchBarInput.value + '&appid=6b32be2fe9073dbf3583f172c6f9d004&units=imperial')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            var cityName = document.createElement("h2")
+            var weatherImage = document.createElement("img")
+            var currentTemp = document.createElement("h3")
+            weatherImage.setAttribute("src", "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png")
+            cityName.textContent = data.name
+            currentTemp.textContent = data.main.temp + "ºF"
+            displayResults.appendChild(cityName)
+            displayResults.appendChild(weatherImage)
+            displayResults.appendChild(currentTemp)
 
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
-
-    fetch(queryURL)
-        .then(function (response) {
-            return response.json();
         })
-    //.then(function )
-
 }
-console.log(fetch)
+
+
 //search button
-searchButton.addEventListener('submit', currentWeather);
+searchButton.addEventListener('click', searchWeather);
 //seach bar
 
 //create a list of searched cities, that you can click to go back to
