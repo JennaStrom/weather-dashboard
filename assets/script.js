@@ -38,6 +38,10 @@ function searchWeather() {
             displayResults.appendChild(currentHumidity);
             displayResults.appendChild(currentWindSpeed);
         })
+
+    fiveDayForecast();
+    //displayResults.appendChild(fiveDayForecast)
+    createSearchHistoryButtons();
 }
 
 
@@ -46,17 +50,18 @@ searchButton.addEventListener('click', searchWeather);
 //seach bar
 
 //create a list of searched cities, that you can click to go back to
-var createSearchHistoryButtons = function() {
-var pastSearches = JSON.parse(localStorage.getItem("cities"));
-console.log(pastSearches)
-for (var i = 0; i <= pastSearches.length; i++) {
-    var buttonList = document.createElement("button")
-    buttonList.textContent = pastSearches[i];
-    searchHistory.appendChild(buttonList)
-    buttonList.addEventListener('click', searchWeather);
+var createSearchHistoryButtons = function () {
+    var pastSearches = JSON.parse(localStorage.getItem("cities"));
+    console.log(pastSearches)
+    searchHistory.innerHTML = ''
+    for (var i = 0; i <= pastSearches.length; i++) {
+        var buttonList = document.createElement("button")
+        buttonList.textContent = pastSearches[i];
+        searchHistory.appendChild(buttonList)
+        //buttonList.addEventListener('click', searchWeather);
+    }
 }
-}
-createSearchHistoryButtons();
+
 
 
 
@@ -71,18 +76,19 @@ var fiveDayForecast = function (cityName) {
             var cityLon = response.coord.lon;
             var cityLat = response.coord.lat;
 
-            fetch('api.openweathermap.org/data/2.5/forecast?lat=' + cityLat + '&lon=' + cityLon + '&appid='+ APIKey + '&units=imperial')
-        .then(function (response) {
-                return response.json();
-            })
-            .then(function (response) {
-                console.log(response);
+            fetch('api.openweathermap.org/data/2.5/forecast?lat=' + cityLat + '&lon=' + cityLon + '&appid=' + APIKey + '&units=imperial')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    console.log(response);
 
-                for (var i = 1; i <=5; i++) {
-
-                }
-            })
-    })
+                    for (var i = 1; i <= 5; i++) {
+                        var futureweatherImage = document.createElement("img");
+                        var futureTemp = document.createElement("p");
+                        var futureHumidity = document.createElement("p");
+                        var futureWindSpeed = document.createElement("p");
+                    }
+                })
+        })
 };
-
-//fiveDayForecast();
