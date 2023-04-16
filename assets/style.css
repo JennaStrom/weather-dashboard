@@ -13,9 +13,14 @@ h1 {
 }
 
 .forecast-card {
-    
+
 }
 
 #city-search {
    padding-right: 40px;
+}
+
+#city-search-history {
+    display: flex;
+    
 }
