@@ -14,13 +14,16 @@ var savedSearches = [];
 
 function searchWeather() {
     var searchBarInput = document.querySelector('#search-bar');
-//     var pastSearches = localStorage.getItem("cities")
-// if (!savedSearches.includes(searchBarInput.value)) {
-//     pastSearches=json.parse(searchHistory)
-// savedSearches.push(searchBarInput.value)
-// localStorage.setItem("cities", savedSearches)
-//}
-displayResults.innerHTML = ''
+    var pastSearches = localStorage.getItem("cities")
+    if (!savedSearches.includes(searchBarInput.value)) {
+        savedSearches.push(searchBarInput.value)
+        localStorage.setItem("cities", savedSearches)
+         var searchHistoryButtons = document.createElement("button")
+         searchHistory.textContent = pastSearches;
+         searchHistory.appendChild(searchHistoryButtons)
+         pastSearches = json.parse(searchHistory)
+    }
+    displayResults.innerHTML = ''
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchBarInput.value + '&appid=6b32be2fe9073dbf3583f172c6f9d004&units=imperial')
         .then(response => response.json())
         .then(data => {
@@ -28,12 +31,15 @@ displayResults.innerHTML = ''
             var cityName = document.createElement("h2")
             var weatherImage = document.createElement("img")
             var currentTemp = document.createElement("h3")
+            var currentHumidity = document.createElement("h3")
             weatherImage.setAttribute("src", "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png")
             cityName.textContent = data.name
-            currentTemp.textContent = data.main.temp + "ºF"
+            currentTemp.textContent = "Temp: " + data.main.temp + "ºF"
+            currentHumidity.textContent = "Humidity: " + data.main.humidity + "%"
             displayResults.appendChild(cityName)
             displayResults.appendChild(weatherImage)
             displayResults.appendChild(currentTemp)
+            displayResults.appendChild(currentHumidity)
 
         })
 }
