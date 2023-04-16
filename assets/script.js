@@ -5,6 +5,7 @@ var searchHistory = document.querySelector('#city-search-history');
 //the weather display after you click search
 var displayResults = document.querySelector('#display-weather-results');
 var searchBarInput = document.querySelector('#search-bar');
+var forecastContainer = document.querySelector('#forecast-container')
 
 var APIKey = "6b32be2fe9073dbf3583f172c6f9d004";
 var city;
@@ -31,7 +32,7 @@ function searchWeather() {
             cityName.textContent = data.name;
             currentTemp.textContent = "Temp: " + data.main.temp + "ºF";
             currentHumidity.textContent = "Humidity: " + data.main.humidity + "%";
-            currentWindSpeed.textContent = "Wind: " + data.wind.speed + " MPG";
+            currentWindSpeed.textContent = "Wind: " + data.wind.speed + " MPH";
             displayResults.appendChild(cityName);
             displayResults.appendChild(weatherImage);
             displayResults.appendChild(currentTemp);
@@ -40,7 +41,6 @@ function searchWeather() {
         })
 
     fiveDayForecast();
-    //displayResults.appendChild(fiveDayForecast)
     createSearchHistoryButtons();
 }
 
@@ -76,18 +76,29 @@ var fiveDayForecast = function (cityName) {
             var cityLon = response.coord.lon;
             var cityLat = response.coord.lat;
 
-            fetch('api.openweathermap.org/data/2.5/forecast?lat=' + cityLat + '&lon=' + cityLon + '&appid=' + APIKey + '&units=imperial')
+            fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + cityLat + '&lon=' + cityLon + '&appid=' + APIKey + '&units=imperial&exclude=minutely,hourly,alerts&cnt=50')
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (response) {
                     console.log(response);
 
-                    for (var i = 1; i <= 5; i++) {
+                    for (var i = 1; i <= 55; i+=10) {
+                        var futureDate = document.createElement("h3")
                         var futureweatherImage = document.createElement("img");
                         var futureTemp = document.createElement("p");
                         var futureHumidity = document.createElement("p");
                         var futureWindSpeed = document.createElement("p");
+                        futureDate.textContent = response.list[i].dt_txt
+                        futureweatherImage.setAttribute("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + "@2x.png");
+                        futureTemp.textContent = "Temp: " + response.list[i].main.temp + "ºF";
+                        futureHumidity.textContent = "Humidity: " + response.list[i].main.humidity + "%";
+                        futureWindSpeed.textContent = "Wind: " + response.list[i].wind.speed + " MPH"
+                        forecastContainer.appendChild(futureDate);
+                        forecastContainer.appendChild(futureweatherImage);
+                        forecastContainer.appendChild(futureTemp);
+                        forecastContainer.appendChild(futureHumidity);
+                        forecastContainer.appendChild(futureWindSpeed);
                     }
                 })
         })
