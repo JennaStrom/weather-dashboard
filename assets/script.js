@@ -24,22 +24,24 @@ function searchWeather() {
         .then(data => {
             console.log(data)
             var cityName = document.createElement("h2");
+            var currentDay = document.createElement("h2")
             var weatherImage = document.createElement("img");
             var currentTemp = document.createElement("h3");
             var currentHumidity = document.createElement("h3");
             var currentWindSpeed = document.createElement("h3");
             weatherImage.setAttribute("src", "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png");
             cityName.textContent = data.name;
+            currentDay.textContent = dayjs().format('MM/DD/YYYY')
             currentTemp.textContent = "Temp: " + data.main.temp + "ºF";
             currentHumidity.textContent = "Humidity: " + data.main.humidity + "%";
             currentWindSpeed.textContent = "Wind: " + data.wind.speed + " MPH";
             displayResults.appendChild(cityName);
+            displayResults.appendChild(currentDay);
             displayResults.appendChild(weatherImage);
             displayResults.appendChild(currentTemp);
             displayResults.appendChild(currentHumidity);
             displayResults.appendChild(currentWindSpeed);
         })
-
     fiveDayForecast();
     createSearchHistoryButtons();
 }
@@ -58,14 +60,17 @@ var createSearchHistoryButtons = function () {
         var buttonList = document.createElement("button")
         buttonList.textContent = pastSearches[i];
         searchHistory.appendChild(buttonList)
-
+        buttonList.setAttribute("text", pastSearches[i])
+console.log(buttonList)
         buttonList.addEventListener('click', (e) => {
-            var previousCityName = pastSearches[i]
+            var previousCityName = buttonList.text
+            console.log(previousCityName)
             searchWeather(previousCityName)
             fiveDayForecast(previousCityName)
         })
     }
 }
+// console.log(createSearchHistoryButtons)
 
 
 
