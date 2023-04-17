@@ -58,9 +58,15 @@ var createSearchHistoryButtons = function () {
         var buttonList = document.createElement("button")
         buttonList.textContent = pastSearches[i];
         searchHistory.appendChild(buttonList)
-        //buttonList.addEventListener('click', searchWeather);
+
+        buttonList.addEventListener('click', (e) => {
+            var previousCityName = pastSearches[i]
+            searchWeather(previousCityName)
+            fiveDayForecast(previousCityName)
+        })
     }
 }
+
 
 
 
@@ -68,6 +74,7 @@ var createSearchHistoryButtons = function () {
 //Search results to include a five day forecast with pictures.
 var fiveDayForecast = function (cityName) {
     var searchBarInput = document.querySelector('#search-bar');
+    forecastContainer.innerHTML = ''
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchBarInput.value + '&appid=6b32be2fe9073dbf3583f172c6f9d004&units=imperial')
         .then(function (response) {
             return response.json();
@@ -76,14 +83,14 @@ var fiveDayForecast = function (cityName) {
             var cityLon = response.coord.lon;
             var cityLat = response.coord.lat;
 
-            fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + cityLat + '&lon=' + cityLon + '&appid=' + APIKey + '&units=imperial&exclude=minutely,hourly,alerts&cnt=50')
+            fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + cityLat + '&lon=' + cityLon + '&appid=' + APIKey + '&units=imperial&exclude=minutely,hourly,alerts&cnt=60')
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (response) {
                     console.log(response);
 
-                    for (var i = 1; i <= 55; i+=10) {
+                    for (var i = 1; i <= 60; i += 9) {
                         var futureDate = document.createElement("h3")
                         var futureweatherImage = document.createElement("img");
                         var futureTemp = document.createElement("p");

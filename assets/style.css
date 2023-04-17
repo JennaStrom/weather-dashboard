@@ -21,6 +21,7 @@ h1 {
 }
 
 #city-search-history {
-    display: flex;
+    /* display: flex;
+    align-items: stretch; */
     
 }
